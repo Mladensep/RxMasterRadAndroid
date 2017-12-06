@@ -1,0 +1,38 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/tab_turquoise</item>
+    </style>
+
+    <style name="ToolBarTheme"  parent="ThemeOverlay.AppCompat.Light">
+
+        <item name="android:textColorPrimary">#fff</item>    <!-- Text Color of Toolbar Title  -->
+        <item name="android:textColorSecondary">#fff</item>  <!-- Color of Overflow Menu ( 3 DOTS icon )
+                                                                    and color of Navigation Drawer Icon-->
+    </style>
+
+    <style name = "DetailSchoolTextFix">
+        <item name="android:textSize">14dp</item>
+        <item name="android:textColor">@color/school_info_text</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginLeft">25dp</item>
+    </style>
+
+    <style name="DataSchoolTextGet" parent="DetailSchoolTextFix">
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:textSize">18dp</item>
+    </style>
+
+    <style name="PopupTheme"  parent="ThemeOverlay.AppCompat.Light">
+
+        <item name="android:textColorPrimary">@color/grey_500</item>  <!-- Text color of Overflow Menu -->
+        <item name="android:background">@color/overflowMenuBg</item>        <!-- Background of Overflow Menu -->
+
+    </style>
+
+</resources>

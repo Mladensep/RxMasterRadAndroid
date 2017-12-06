@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/school_info_back">
+
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Назив школе:"
+        style="@style/DetailSchoolTextFix"/>
+
+    <TextView
+        android:id="@+id/naziv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/DataSchoolTextGet"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Место школе:"
+        style="@style/DetailSchoolTextFix" />
+
+    <TextView
+        android:id="@+id/mesto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/DataSchoolTextGet" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Опстина школе:"
+        style="@style/DetailSchoolTextFix" />
+
+    <TextView
+        android:id="@+id/opstina"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/DataSchoolTextGet"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Адреса школе:"
+        style="@style/DetailSchoolTextFix"/>
+
+    <TextView
+        android:id="@+id/adresa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/DataSchoolTextGet"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Поштански број школе:"
+        style="@style/DetailSchoolTextFix"/>
+
+    <TextView
+        android:id="@+id/pbroj"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/DataSchoolTextGet"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Округ школе:"
+        style="@style/DetailSchoolTextFix"/>
+
+    <TextView
+        android:id="@+id/okrug"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/DataSchoolTextGet"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Суправа школе:"
+        style="@style/DetailSchoolTextFix"/>
+
+    <TextView
+        android:id="@+id/suprava"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/DataSchoolTextGet"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Сајт школе:"
+        style="@style/DetailSchoolTextFix"/>
+
+    <TextView
+        android:id="@+id/www"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:autoLink="web"
+        style="@style/DataSchoolTextGet"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Контакт телефон школе:"
+        style="@style/DetailSchoolTextFix"/>
+
+    <TextView
+        android:id="@+id/tel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/DataSchoolTextGet"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Факс школе:"
+        style="@style/DetailSchoolTextFix"/>
+
+    <TextView
+        android:id="@+id/fax"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/DataSchoolTextGet"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Врста школе:"
+        style="@style/DetailSchoolTextFix"/>
+
+    <TextView
+        android:id="@+id/vrsta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/DataSchoolTextGet"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Одељења школе:"
+        style="@style/DetailSchoolTextFix"/>
+
+    <TextView
+        android:id="@+id/odeljenja"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/DataSchoolTextGet"/>
+<!--
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Види на мапи"
+        style="@style/DetailSchoolTextFix"/>
+-->
+    <TextView
+        android:id="@+id/gps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/DataSchoolTextGet"
+        android:textColor="@color/tab_turquoise"
+        android:layout_marginBottom="30dp"/>
+
+</LinearLayout>
+
+</ScrollView>

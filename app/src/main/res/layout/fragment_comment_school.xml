@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/school_info_back">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/DataSchoolTextGet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Списак коментара:"
+            android:layout_marginTop="10dp"/>
+
+        <ListView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="25dp"/>
+
+        <TextView
+            style="@style/DetailSchoolTextFix"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Оставите коментар:"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="10dp"/>
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="top"
+            android:background="@color/school_info_text"
+            android:imeActionLabel="done"/>
+
+        <Button
+            android:id="@+id/submitButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Пошаљите коментар"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginBottom="30dp"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:background="@color/tab_background"/>
+
+    </LinearLayout>
+</ScrollView>

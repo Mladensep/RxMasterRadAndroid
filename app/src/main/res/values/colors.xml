@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="white">#ffffffff</color>
+    <color name="grey_500">#9E9E9E</color>
+    <color name="overflowMenuBg">#fffcfff6</color>
+    <color name="tab_turquoise">#00acc1</color>
+    <color name="tab_background">#042535</color>
+    <color name="light_gray">#f4f4f4</color>
+    <color name="light_gray2">#f0f0f0</color>
+    <color name="tab_text">#c0c0c0</color>
+    <color name="school_info_back">#2b3846</color>
+    <color name="school_info_text">#8ba6b9</color>
+    <color name="blue_button_color">#4576c8</color>
+    <color name="drawer_background">#9e9e9e</color>
+    <color name="fb_color">#4267b2</color>
+    <color name = "disable_button">#354a54</color>
+
+
+
+</resources>

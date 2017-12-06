@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">RxMasterRadAndroid</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+    <string name="delete">Delete</string>
+    <string name="search">Search</string>
+    <string name="settings">Settings</string>
+    <string name="edit">Edit</string>
+    <string name="exit">Exit</string>
+    <string name="empty">""</string>
+    <string name="title_activity_maps_single_school">Map</string>
+
+    <string name="facebook_app_id">846231652212166</string>
+
+</resources>
