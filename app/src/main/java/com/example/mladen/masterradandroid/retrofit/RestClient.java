@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RestClient {
 
     //public static final String BASE_URL = "http://opendata.mpn.gov.rs";
-    public static final String BASE_URL = "http://192.168.43.214:61615";
+    public static final String BASE_URL = "http://192.168.0.14:61615";
 
     private static RestApi requestInterface = null;
 

@@ -21,7 +21,6 @@ import java.util.ArrayList;
 public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
 
     private ArrayList<SchoolModel> listSchool;
-    private static final String TAG = "myApp";
     public DataAdapter(ArrayList<SchoolModel> listSchool) {
         this.listSchool = listSchool;
     }

@@ -2,15 +2,42 @@ package com.example.mladen.masterradandroid.model;
 
 
 public class CommentModel {
-    public String com;
+    public String titleComment;
+    public String contentComment;
+    public String fbName;
+    public String dateTime;
     public int school_id;
 
-    public String getCom() {
-        return com;
+    public String getTitleComment() {
+        return titleComment;
     }
 
-    public void setCom(String com) {
-        this.com = com;
+    public void setTitleComment(String titleComment) {
+        this.titleComment = titleComment;
+    }
+
+    public String getContentComment() {
+        return contentComment;
+    }
+
+    public void setContentComment(String contentComment) {
+        this.contentComment = contentComment;
+    }
+
+    public String getFbName() {
+        return fbName;
+    }
+
+    public void setFbName(String fbName) {
+        this.fbName = fbName;
+    }
+
+    public String getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
     }
 
     public int getSchool_id() {

@@ -34,8 +34,8 @@
     </android.support.v7.widget.Toolbar>
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_margin="30dp"
         android:textSize="14dp"
         android:text="Апликација Школадроид приказује школске установе на територији Републике Србије, пружа информације о школским установама, остављање и читање коментара, приказ и слање оцена односно рецензија као и филтрирање и приказ школских установа на мапи." />

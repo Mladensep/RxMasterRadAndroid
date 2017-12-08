@@ -1,31 +1,35 @@
 package com.example.mladen.masterradandroid.fragments;
 
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ListView;
+
 import android.widget.Toast;
 
 import com.example.mladen.masterradandroid.R;
-import com.example.mladen.masterradandroid.adapter.CommentAdapter;
+import com.example.mladen.masterradandroid.adapter.CommentDataAdapter;
 import com.example.mladen.masterradandroid.model.CommentModel;
 import com.example.mladen.masterradandroid.model.SchoolModel;
 import com.example.mladen.masterradandroid.retrofit.RestApi;
 import com.example.mladen.masterradandroid.retrofit.RestClient;
 
+
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Calendar;
+
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,28 +40,30 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.example.mladen.masterradandroid.fragments.DialogComment.DATEPICKER_FRAGMENT;
+
 
 public class CommentSchoolFragment extends Fragment {
 
-    @BindView(R.id.editText) EditText editText;
-    @BindView(R.id.list) ListView listView;
-    @BindView(R.id.submitButton) Button submitButton;
+    @BindView(R.id.button) FloatingActionButton button;
+    @BindView(R.id.recycler_view) RecyclerView recyclerView;
 
-    private String getComment;
     private int id;
     private CommentModel commentModel;
     private RestApi apiService;
     private CompositeDisposable compositeDisposable;
     private ArrayList<CommentModel> list;
-    private CommentAdapter adapter;
     private ConnectivityManager conMgr;
+
+    private CommentDataAdapter dataAdapter;
+
 
     private String mailfb;
     private String namefb;
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.fragment_comment_school, container, false);
 
         ButterKnife.bind(this, view);
@@ -78,7 +84,6 @@ public class CommentSchoolFragment extends Fragment {
         if ( conMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED
                 || conMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED ) {
 
-
             apiService = RestClient.getClient();
             compositeDisposable = new CompositeDisposable();
 
@@ -92,19 +97,73 @@ public class CommentSchoolFragment extends Fragment {
         }
 
         if(mailfb != "") {
-            submitButton.setBackgroundColor(getResources().getColor(R.color.tab_background));
-            submitButton.setTextColor(getResources().getColor(R.color.white));
+            button.show();
         } else {
-            submitButton.setBackgroundColor(getResources().getColor(R.color.disable_button));
-            submitButton.setTextColor(getResources().getColor(R.color.light_gray2));
+            button.hide();
         }
-
         return view;
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case DATEPICKER_FRAGMENT:
+                if (resultCode == Activity.RESULT_OK) {
+                    Bundle bundle = data.getExtras();
+                    String titleCom = bundle.getString("title", "");
+                    String contentCom = bundle.getString("content", "");
+
+                    String time = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
+
+                    commentModel.setTitleComment(titleCom);
+                    commentModel.setContentComment(contentCom);
+                    commentModel.setFbName(namefb);
+                    commentModel.setDateTime(time);
+                    commentModel.setSchool_id(id);
+
+                    compositeDisposable.add(apiService.postOrder(commentModel)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribeWith(new DisposableObserver<String>() {
+
+                                @Override
+                                public void onNext(String value) {
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+                                    Toast.makeText(getActivity(), "Није послато", Toast.LENGTH_SHORT).show();
+
+                                    e.printStackTrace();
+                                }
+
+                                @Override
+                                public void onComplete() {
+                                    Toast.makeText(getActivity(), "Успешно послато", Toast.LENGTH_SHORT).show();
+
+                                    getCommentData();
+                                }
+                            }));
+                } else if (resultCode == Activity.RESULT_CANCELED) {
+
+                }
+                break;
+        }
+    }
+
+    @OnClick(R.id.button)
+    public void openDialog() {
+
+        DialogComment dialog = new DialogComment();
+
+// optionally pass arguments to the dialog fragment
+//        Bundle args = new Bundle();
+//        args.putString("pickerStyle", "fancy");
+//        dialog.setArguments(args);
+// setup link back to use and display
+
+        dialog.setTargetFragment(this, DATEPICKER_FRAGMENT);
+        dialog.show(getFragmentManager().beginTransaction(), "MyProgressDialog");
     }
 
     public Observable<Void> sharedPref() {
@@ -128,15 +187,12 @@ public class CommentSchoolFragment extends Fragment {
         compositeDisposable.add(apiService.getAllComment(id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeWith(new DisposableObserver<List<CommentModel>>() {
+            .subscribeWith(new DisposableObserver<ArrayList<CommentModel>>() {
                 @Override
-                public void onNext(List<CommentModel> commentModels) {
-                    int xa = commentModels.size()*137;
-                    listView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, xa));
-
-                    list = new ArrayList<>(commentModels);
-                    adapter = new CommentAdapter(getActivity(), list);
-                    listView.setAdapter(adapter);
+                public void onNext(ArrayList<CommentModel> commentModels) {
+                    initRecyclerView();
+                    dataAdapter = new CommentDataAdapter(commentModels);
+                    recyclerView.setAdapter(dataAdapter);
                 }
 
                 @Override
@@ -151,49 +207,9 @@ public class CommentSchoolFragment extends Fragment {
             }));
     }
 
-    @OnClick(R.id.submitButton)
-    public void sendComment() {
-        if(mailfb != "") {
-            if (conMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED
-                    || conMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
-
-                getComment = editText.getText().toString();
-                String finalComment = namefb + ": " +getComment;
-
-                commentModel.setCom(finalComment);
-                commentModel.setSchool_id(id);
-
-                compositeDisposable.add(apiService.postOrder(commentModel)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeWith(new DisposableObserver<String>() {
-
-                            @Override
-                            public void onNext(String value) {
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-                                Toast.makeText(getActivity(), "Није послато", Toast.LENGTH_SHORT).show();
-
-                                e.printStackTrace();
-                            }
-
-                            @Override
-                            public void onComplete() {
-                                Toast.makeText(getActivity(), "Успешно послато", Toast.LENGTH_SHORT).show();
-
-                                getCommentData();
-                            }
-                        }));
-
-            } else if (conMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.DISCONNECTED
-                    || conMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.DISCONNECTED) {
-
-                Toast.makeText(getActivity(), "Нема интернет конекције. ", Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            Toast.makeText(getActivity(), "Морате бити пријављени", Toast.LENGTH_SHORT).show();
-        }
+    private void initRecyclerView() {
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity().getApplicationContext());
+        recyclerView.setLayoutManager(manager);
     }
 }

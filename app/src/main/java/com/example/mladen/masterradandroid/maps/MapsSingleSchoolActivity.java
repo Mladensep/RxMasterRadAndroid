@@ -1,11 +1,13 @@
 package com.example.mladen.masterradandroid.maps;
 
-import android.os.Build;
-import android.support.v4.app.FragmentActivity;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.example.mladen.masterradandroid.R;
 import com.example.mladen.masterradandroid.model.SchoolModel;
@@ -17,40 +19,26 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
-public class MapsSingleSchoolActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsSingleSchoolActivity extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private SchoolModel sc;
-    @BindView(R.id.toolbar_title) TextView toolbar;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps_single_school);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_maps_single_school, container, false);
+
+    SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        Bundle bundle = this.getIntent().getExtras();
+        Bundle bundle = getActivity().getIntent().getExtras();
         sc = bundle.getParcelable("data");
 
-        ButterKnife.bind(this);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            toolbar.setText(sc.getNaziv());
-        }
+        return view;
     }
-
-    @OnClick(R.id.back_icon)
-    public void back() {
-        finish();
-    }
-
 
     /**
      * Manipulates the map once available.
@@ -72,7 +60,6 @@ public class MapsSingleSchoolActivity extends FragmentActivity implements OnMapR
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(center, 15));
 
         LatLng location = new LatLng(lat, lng);
-        //mMap.addMarker(new MarkerOptions().position(sydney).title(sc.getNaziv()));
         mMap.addMarker(new MarkerOptions().position(location));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
 
@@ -80,7 +67,7 @@ public class MapsSingleSchoolActivity extends FragmentActivity implements OnMapR
             @Override
             public boolean onMarkerClick(Marker marker) {
 
-                Toast.makeText(MapsSingleSchoolActivity.this, sc.getNaziv(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), sc.getNaziv(), Toast.LENGTH_SHORT).show();
 
                 return false;
             }

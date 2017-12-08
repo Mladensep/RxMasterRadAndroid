@@ -34,7 +34,6 @@ public class AllSchoolsFragment extends Fragment {
     private DataAdapter dataAdapter;
     private RealmHelper realmHelper;
     private ArrayList<SchoolModel> schoolModel;
-    private CompositeDisposable disposable = new CompositeDisposable();
 
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
 

@@ -5,6 +5,7 @@ import com.example.mladen.masterradandroid.model.CommentModel;
 import com.example.mladen.masterradandroid.model.RecensionModel;
 import com.example.mladen.masterradandroid.model.SchoolModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -23,7 +24,7 @@ public interface RestApi {
     Observable<String> postOrder(@Body CommentModel sendComment);
 
     @GET("/Api/Comment/")
-    Observable<List<CommentModel>> getAllComment(@Query("id") int id);
+    Observable<ArrayList<CommentModel>> getAllComment(@Query("id") int id);
 
     @POST("/Api/Recension")
     Observable<String> postRecension(@Body RecensionModel recensionModel);

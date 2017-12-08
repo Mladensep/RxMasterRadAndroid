@@ -8,11 +8,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.example.mladen.masterradandroid.R;
 import com.example.mladen.masterradandroid.maps.MapsSingleSchoolActivity;
 import com.example.mladen.masterradandroid.model.SchoolModel;
+import com.example.mladen.masterradandroid.utils.Utils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,7 +34,6 @@ public class DetailSchoolFragment extends Fragment{
     @BindView(R.id.fax) TextView fax;
     @BindView(R.id.vrsta) TextView vrsta;
     @BindView(R.id.odeljenja) TextView odeljenja;
-    @BindView(R.id.gps) TextView gps;
 
     private SchoolModel sc;
 
@@ -45,6 +46,17 @@ public class DetailSchoolFragment extends Fragment{
 
         Bundle bundle = getActivity().getIntent().getExtras();
         sc = bundle.getParcelable("data");
+
+
+        MapsSingleSchoolActivity das = new MapsSingleSchoolActivity();
+
+        Bundle bundle2 = new Bundle();
+        bundle2.putParcelable("data", sc);
+        das.setArguments(bundle2);
+
+        Utils.replaceFragment(getActivity(), das, "test");
+
+
 
         naziv.setText(sc.getNaziv());
         mesto.setText(sc.getMesto());
@@ -59,24 +71,11 @@ public class DetailSchoolFragment extends Fragment{
         vrsta.setText(sc.getVrsta());
         odeljenja.setText(sc.getOdeljenja());
 
-        gps.setText("Прикажи на мапи");
-
         return view;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-    }
-
-    @OnClick(R.id.gps)
-    public void showSchool() {
-        Intent intent =  new Intent(getActivity(), MapsSingleSchoolActivity.class);
-
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("data", sc);
-        intent.putExtras(bundle);
-
-        getActivity().startActivity(intent);
     }
 }

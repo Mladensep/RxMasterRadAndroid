@@ -48,7 +48,7 @@ public class CommentAdapter extends BaseAdapter {
         CommentModel model = commentModels.get(position);
 
         TextView textView = (TextView) convertView.findViewById(R.id.comment_id);
-        textView.setText(model.getCom() + "\n");
+        textView.setText(model.getContentComment() + "\n");
 
         return convertView;
     }
