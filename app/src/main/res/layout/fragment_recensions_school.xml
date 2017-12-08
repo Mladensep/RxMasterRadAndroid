@@ -1,58 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/school_info_back"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <TextView
-        style="@style/DataSchoolTextGet"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp"
-        android:text="Оцена школске установе:"
-        android:textAlignment="center" />
+        android:layout_height="match_parent"
+        android:background="@color/school_info_back"
+        android:orientation="vertical">
 
-    <RatingBar
-        android:id="@+id/ratingBarGet"
+        <TextView
+            style="@style/DataSchoolTextGet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center_horizontal"
+            android:text="Просечна оцена школске установе:"
+            android:textAlignment="center" />
+
+        <RatingBar
+            android:id="@+id/ratingBarGet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:isIndicator="true"
+            android:numStars="5"
+            android:rating="2.0"
+            android:stepSize="0.1" />
+
+        <TextView
+            android:id="@+id/procenti"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/tab_turquoise"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="10dp"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/ocenite_ustanovu"
+            style="@style/DataSchoolTextGet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="35dp"
+            android:text="Оцените школску установу:"
+            android:textAlignment="center" />
+
+        <RatingBar
+            android:id="@+id/ratingBarPost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:numStars="5"
+            android:rating="2.0"
+            android:stepSize="1" />
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:numStars="5"
-        android:rating="2.0"
-        android:stepSize="1.0" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="16dp"
+        android:src="@mipmap/send_message_button" />
 
-    <TextView
-        style="@style/DataSchoolTextGet"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="35dp"
-        android:text="Оцените школску установу:"
-        android:textAlignment="center" />
-
-    <RatingBar
-        android:id="@+id/ratingBarPost"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:numStars="5"
-        android:rating="2.0"
-        android:stepSize="0.1" />
-
-    <Button
-        android:id="@+id/sendRecension"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
-        android:layout_marginTop="30dp"
-        android:background="@color/tab_background"
-        android:text="Пошаљи оцену"
-        android:textAllCaps="false"
-        android:textColor="@color/white" />
-
-</LinearLayout>
+</RelativeLayout>

@@ -5,12 +5,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mladen.masterradandroid.R;
@@ -36,7 +38,9 @@ public class RecensionsSchoolFragment extends Fragment {
 
     @BindView(R.id.ratingBarPost) RatingBar ratingBar;
     @BindView(R.id.ratingBarGet) RatingBar ratingGet;
-    @BindView(R.id.sendRecension) Button submitButton;
+    @BindView(R.id.button) FloatingActionButton floatingActionButton;
+    @BindView(R.id.ocenite_ustanovu) TextView textView;
+    @BindView(R.id.procenti) TextView procenti;
 
     private CompositeDisposable compositeDisposable;
 
@@ -74,11 +78,13 @@ public class RecensionsSchoolFragment extends Fragment {
         getRecensionData();
 
         if(mailfb != "") {
-            submitButton.setBackgroundColor(getResources().getColor(R.color.tab_background));
-            submitButton.setTextColor(getResources().getColor(R.color.white));
+            floatingActionButton.show();
+            textView.setVisibility(View.VISIBLE);
+            ratingBar.setVisibility(View.VISIBLE);
         } else {
-            submitButton.setBackgroundColor(getResources().getColor(R.color.disable_button));
-            submitButton.setTextColor(getResources().getColor(R.color.light_gray2));
+            floatingActionButton.hide();
+            textView.setVisibility(View.INVISIBLE);
+            ratingBar.setVisibility(View.INVISIBLE);
         }
 
         return view;
@@ -116,7 +122,6 @@ public class RecensionsSchoolFragment extends Fragment {
     private void handleResponse(List<RecensionModel> recensionModels) {
         lista = new ArrayList<>(recensionModels);
 
-
         int size = lista.size();
 
         double xa = 0;
@@ -128,6 +133,9 @@ public class RecensionsSchoolFragment extends Fragment {
         double count = xa / size;
         ratingGet.setRating((float) count);
 
+        double ukupnoProcenata = count * 20;
+        procenti.setText((int) ukupnoProcenata + "%");
+
         Toast.makeText(getActivity(), "Добављене рецензије. " , Toast.LENGTH_SHORT).show();
     }
 
@@ -135,7 +143,7 @@ public class RecensionsSchoolFragment extends Fragment {
         Toast.makeText(getActivity(), "Рецензије нису добављене. ", Toast.LENGTH_SHORT).show();
     }
 
-    @OnClick(R.id.sendRecension)
+    @OnClick(R.id.button)
     public void send() {
         if(mailfb != "") {
             recension = ratingBar.getRating();

@@ -25,7 +25,7 @@ public class RealmHelper {
         ((App) activity.getApplication()).getComponent().inject(this);
     }
 
-    public Observable<Boolean> addSchoolsRx(List<SchoolModel> list) {
+    public Observable<Void> addSchoolsRx(List<SchoolModel> list) {
 
         try {
             realmDb.beginTransaction();
@@ -52,11 +52,11 @@ public class RealmHelper {
             }
             realmDb.commitTransaction();
 
-            return Observable.just(true);
+            return Observable.empty();
 
         } catch (Exception e) {
             e.printStackTrace();
-            return Observable.just(false);
+            return Observable.empty();
         }
     }
 

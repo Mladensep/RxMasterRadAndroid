@@ -17,7 +17,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.mladen.masterradandroid.R;
 import com.example.mladen.masterradandroid.database.App;
@@ -28,8 +27,6 @@ import com.example.mladen.masterradandroid.model.SearchModel;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -59,6 +56,7 @@ public class SearchActivity extends AppCompatActivity {
     @BindView(R.id.samo_srednje_id) CheckBox samoSrednje;
     @BindView(R.id.submit_button) Button button;
     @BindView(R.id.search_result) RecyclerView searchResult;
+    @BindView(R.id.search_result2) RecyclerView searchResult2;
 
     @BindView(R.id.txt1) TextView textView;
     @BindView(R.id.txt2) TextView textView2;
@@ -75,6 +73,7 @@ public class SearchActivity extends AppCompatActivity {
     private static final int MIN_LENGTH = 2;
 
     private boolean isChosen;
+    private boolean isChosen2;
     private RealmHelper realmHelper;
     private ArrayList<SchoolModel> schoolModel;
 
@@ -94,8 +93,13 @@ public class SearchActivity extends AppCompatActivity {
         getAllSchool();
 
         SearchResultAdapter adapter = new SearchResultAdapter();
+        SearchResultAdapter2 adapter2 = new SearchResultAdapter2();
+
         searchResult.setLayoutManager(new LinearLayoutManager(this));
         searchResult.setAdapter(adapter);
+
+        searchResult2.setLayoutManager(new LinearLayoutManager(this));
+        searchResult2.setAdapter(adapter2);
 
         if (isChosen == false) {
             searchSubscription = RxTextView.afterTextChangeEvents(editNaziv)
@@ -111,8 +115,23 @@ public class SearchActivity extends AppCompatActivity {
                     .observeOn(AndroidSchedulers.mainThread())
                     // Set the result on our adapter
                     .subscribe(adapter::setSearchResult);
-        }
 
+
+            //location
+            searchSubscription = RxTextView.afterTextChangeEvents(editMesto)
+                    // Convert the event to a String
+                    .map(textChangeEvent -> textChangeEvent.editable().toString())
+                    // Perform search on computation scheduler
+                    .observeOn(Schedulers.computation())
+                    // If we get multiple events within 200ms, just emit the last one
+                    .debounce(200, TimeUnit.MILLISECONDS)
+                    // "Convert" the query string to a search result
+                    .switchMap(this::searchCity)
+                    // Switch back to the main thread
+                    .observeOn(AndroidSchedulers.mainThread())
+                    // Set the result on our adapter
+                    .subscribe(adapter2::setSearchResult);
+        }
 
         SharedPreferences sharedPref = this.getSharedPreferences("facebook", Context.MODE_PRIVATE);
         String highScore = sharedPref.getString("emailData", "");
@@ -219,6 +238,78 @@ public class SearchActivity extends AppCompatActivity {
             }
         }
     }
+
+
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private Observable<List<String>> searchCity(String query) throws UnsupportedEncodingException {
+        Log.d(TAG, "searchNames: Search for " + query);
+        Log.d(TAG, "Searching on " + Thread.currentThread().getName());
+        if (query == null || query.length() < MIN_LENGTH) {
+            return Observable.just(Collections.emptyList());
+        }
+
+        LinkedList<String> result = new LinkedList<>();
+        try (InputStream inputStream = getResources()
+                .openRawResource(R.raw.mesto_skole)) {
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+            BufferedReader reader = new BufferedReader(inputStreamReader);
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.toLowerCase().contains(query.toLowerCase())) {
+                    result.add(line);
+                }
+            }
+        } catch (IOException e) {
+            return Observable.error(e);
+        }
+
+        Collections.sort(result);
+        Log.d(TAG, "searchNames: Found " + result.size() + " hits!");
+        return Observable.just(result);
+    }
+
+    private class SearchResultAdapter2 extends RecyclerView.Adapter<SearchResultViewHolder> {
+        private List<String> mResult;
+
+        @Override
+        public SearchResultViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View viewItem = View.inflate(SearchActivity.this,
+                    android.R.layout.simple_list_item_1, null);
+            return new SearchResultViewHolder(viewItem);
+        }
+
+        @Override
+        public void onBindViewHolder(SearchResultViewHolder holder, int position) {
+            holder.textView.setText(mResult.get(position));
+
+            holder.rootView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String text = (String) holder.textView.getText();
+
+                    editMesto.setText(text, TextView.BufferType.EDITABLE);
+
+                    isChosen2 = true;
+                }
+            });
+            if(isChosen2 == true) {
+                holder.textView.setText("");
+            }
+            isChosen2 = false;
+        }
+
+        @Override
+        public int getItemCount() {
+            return mResult != null ? mResult.size() : 0;
+        }
+
+        public void setSearchResult(List<String> result) {
+            mResult = result;
+            notifyDataSetChanged();
+        }
+    }
+
 
     private void getAllSchool() {
         List<SchoolRealmModel> result = realmHelper.findAll();

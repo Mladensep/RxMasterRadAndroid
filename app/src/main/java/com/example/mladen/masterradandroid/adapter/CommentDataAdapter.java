@@ -11,7 +11,6 @@ import com.example.mladen.masterradandroid.R;
 import com.example.mladen.masterradandroid.model.CommentModel;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class CommentDataAdapter extends RecyclerView.Adapter<CommentDataAdapter.ViewHolder>{
 
