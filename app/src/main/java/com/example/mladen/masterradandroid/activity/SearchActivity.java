@@ -43,7 +43,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -61,9 +60,6 @@ public class SearchActivity extends AppCompatActivity {
     @BindView(R.id.search_result2) RecyclerView searchResult2;
     @BindView(R.id.back_icon) ImageView back;
     @BindView(R.id.submit_button) Button submitButton;
-
-    @BindView(R.id.txt1) TextView textView;
-    @BindView(R.id.txt2) TextView textView2;
 
     private int osnovne;
     private int srednje;
@@ -140,9 +136,6 @@ public class SearchActivity extends AppCompatActivity {
         SharedPreferences sharedPref = this.getSharedPreferences("facebook", Context.MODE_PRIVATE);
         String highScore = sharedPref.getString("emailData", "");
         String highScore2 = sharedPref.getString("tokenData", "");
-
-        textView.setText(highScore);
-        textView2.setText(highScore2);
 
         RxView.clicks(back)
                 .subscribe(new Consumer<Object>() {

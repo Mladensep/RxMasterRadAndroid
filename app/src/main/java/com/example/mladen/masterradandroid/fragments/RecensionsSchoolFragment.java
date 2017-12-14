@@ -181,52 +181,10 @@ public class RecensionsSchoolFragment extends Fragment {
         double ukupnoProcenata = count * 20;
         procenti.setText((int) ukupnoProcenata + "%");
 
-        Toast.makeText(getActivity(), "Добављене рецензије. " , Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getActivity(), "Добављене рецензије. " , Toast.LENGTH_SHORT).show();
     }
 
     private void handleEror(Throwable error) {
         Toast.makeText(getActivity(), "Рецензије нису добављене. ", Toast.LENGTH_SHORT).show();
     }
-
-//    @OnClick(R.id.button)
-//    public void send() {
-//        if(mailfb != "") {
-//            recension = ratingBar.getRating();
-//
-//            recensionModel.setRec(recension);
-//            recensionModel.setSchool_id(school_id);
-//            recensionModel.setEmail(mailfb);
-//
-//            compositeDisposable.add(apiService.postRecension(recensionModel)
-//                    .observeOn(AndroidSchedulers.mainThread())
-//                    .subscribeOn(Schedulers.io())
-//                    .subscribeWith(new DisposableObserver<String>() {
-//                        @Override
-//                        public void onNext(String s) {
-//
-//                            String response = s;
-//                            if(response.equals("0")) {
-//                                Toast.makeText(getActivity(), "Успешно послато", Toast.LENGTH_SHORT).show();
-//                            } else if(response.equals("2")) {
-//                                Toast.makeText(getActivity(), "Установа је већ оцењена", Toast.LENGTH_SHORT).show();
-//                            } else
-//                                Toast.makeText(getActivity(), "Грешка", Toast.LENGTH_SHORT).show();
-//
-//                            getRecensionData();
-//                        }
-//
-//                        @Override
-//                        public void onError(Throwable e) {
-//                            Toast.makeText(getActivity(), "Грешка са сервиса", Toast.LENGTH_SHORT).show();
-//
-//                        }
-//
-//                        @Override
-//                        public void onComplete() {
-//
-//                        }
-//                    }));
-//        } else
-//            Toast.makeText(getActivity(), "Морате бити пријављени", Toast.LENGTH_SHORT).show();
-//    }
 }

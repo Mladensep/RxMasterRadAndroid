@@ -88,12 +88,12 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onCancel() {
-                textView.setText("cancel");
+                //textView.setText("cancel");
             }
 
             @Override
             public void onError(FacebookException error) {
-                textView.setText("eROR");
+                //textView.setText("eROR");
             }
         });
     }
@@ -104,15 +104,11 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onCompleted(JSONObject object, GraphResponse response) {
                 //Toast.makeText(getApplicationContext(),"graph request completed",Toast.LENGTH_SHORT).show();
-                Toast.makeText(getApplicationContext(),"Успешно пријављивање",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),"Успешно пријављивање",Toast.LENGTH_SHORT).show();
                 try{
                     email =  object.getString("email");
                     token = String.valueOf(accessToken);
                     name = object.getString("name");
-
-                    textView.setText( email);
-                    textView2.setText(token);
-                    textView3.setText(name);
 
                     SharedPreferences sharedPref = activity.getSharedPreferences("facebook", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPref.edit();

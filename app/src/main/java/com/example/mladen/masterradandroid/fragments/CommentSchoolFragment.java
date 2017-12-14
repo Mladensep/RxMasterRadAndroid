@@ -109,12 +109,6 @@ public class CommentSchoolFragment extends Fragment {
                     public void accept(Object o) throws Exception {
                         DialogComment dialog = new DialogComment();
 
-// optionally pass arguments to the dialog fragment
-//        Bundle args = new Bundle();
-//        args.putString("pickerStyle", "fancy");
-//        dialog.setArguments(args);
-// setup link back to use and display
-
                         dialog.setTargetFragment(CommentSchoolFragment.this, DATEPICKER_FRAGMENT);
                         dialog.show(getFragmentManager().beginTransaction(), "MyProgressDialog");
                     }
@@ -170,21 +164,6 @@ public class CommentSchoolFragment extends Fragment {
         }
     }
 
-//    @OnClick(R.id.button)
-//    public void openDialog() {
-//
-//        DialogComment dialog = new DialogComment();
-//
-//// optionally pass arguments to the dialog fragment
-////        Bundle args = new Bundle();
-////        args.putString("pickerStyle", "fancy");
-////        dialog.setArguments(args);
-//// setup link back to use and display
-//
-//        dialog.setTargetFragment(this, DATEPICKER_FRAGMENT);
-//        dialog.show(getFragmentManager().beginTransaction(), "MyProgressDialog");
-//    }
-
     public Observable<Void> sharedPref() {
         SharedPreferences sharedPref = getActivity().getSharedPreferences("facebook", Context.MODE_PRIVATE);
 
@@ -221,7 +200,7 @@ public class CommentSchoolFragment extends Fragment {
 
                 @Override
                 public void onComplete() {
-                    Toast.makeText(getActivity(), "Добављени коментари. " , Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getActivity(), "Добављени коментари. " , Toast.LENGTH_SHORT).show();
                 }
             }));
     }
