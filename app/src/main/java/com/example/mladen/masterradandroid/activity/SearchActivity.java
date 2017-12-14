@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.mladen.masterradandroid.R;
@@ -24,6 +25,7 @@ import com.example.mladen.masterradandroid.database.RealmHelper;
 import com.example.mladen.masterradandroid.model.SchoolModel;
 import com.example.mladen.masterradandroid.model.SchoolRealmModel;
 import com.example.mladen.masterradandroid.model.SearchModel;
+import com.jakewharton.rxbinding2.view.RxView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import java.io.BufferedReader;
@@ -45,6 +47,7 @@ import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 
@@ -54,9 +57,10 @@ public class SearchActivity extends AppCompatActivity {
     @BindView(R.id.edit_text_mesto) EditText editMesto;
     @BindView(R.id.samo_osnovne_id) CheckBox samoOsnovne;
     @BindView(R.id.samo_srednje_id) CheckBox samoSrednje;
-    @BindView(R.id.submit_button) Button button;
     @BindView(R.id.search_result) RecyclerView searchResult;
     @BindView(R.id.search_result2) RecyclerView searchResult2;
+    @BindView(R.id.back_icon) ImageView back;
+    @BindView(R.id.submit_button) Button submitButton;
 
     @BindView(R.id.txt1) TextView textView;
     @BindView(R.id.txt2) TextView textView2;
@@ -139,6 +143,44 @@ public class SearchActivity extends AppCompatActivity {
 
         textView.setText(highScore);
         textView2.setText(highScore2);
+
+        RxView.clicks(back)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) throws Exception {
+                        finish();
+                    }
+                });
+
+        RxView.clicks(submitButton)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) throws Exception {
+                        osnovne = 0;
+                        srednje = 0;
+                        String naziv = editNaziv.getText().toString();
+                        String mesto = editMesto.getText().toString();
+
+                        isOsnovne = samoOsnovne.isChecked();
+                        if (isOsnovne)
+                            osnovne = 1;
+
+                        isSrednje = samoSrednje.isChecked();
+                        if (isSrednje)
+                            srednje = 1;
+
+                        searchModel.setNaziv(naziv);
+                        searchModel.setMesto(mesto);
+                        searchModel.setSamoOsnovne(osnovne);
+                        searchModel.setSamoSrednje(srednje);
+
+                        Intent intent = new Intent(SearchActivity.this, SearchResultTabActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable("dataa", searchModel);
+                        intent.putExtras(bundle);
+                        SearchActivity.this.startActivity(intent);
+                    }
+                });
     }
 
     @Override
@@ -322,44 +364,5 @@ public class SearchActivity extends AppCompatActivity {
 
             schoolModel.add(model);
         }
-    }
-
-    @OnClick(R.id.back_icon)
-    public void back() {
-        finish();
-    }
-
-    @OnClick(R.id.submit_button)
-    public void search() {
-        osnovne = 0;
-        srednje = 0;
-        String naziv = editNaziv.getText().toString();
-        String mesto = editMesto.getText().toString();
-
-        isOsnovne = samoOsnovne.isChecked();
-        if (isOsnovne)
-            osnovne = 1;
-
-        isSrednje = samoSrednje.isChecked();
-        if (isSrednje)
-            srednje = 1;
-
-        searchModel.setNaziv(naziv);
-        searchModel.setMesto(mesto);
-        searchModel.setSamoOsnovne(osnovne);
-        searchModel.setSamoSrednje(srednje);
-
-//        SearchResultFragment fragment = new SearchResultFragment();
-//        Bundle bundle = new Bundle();
-//        bundle.putParcelable("dataa", searchModel);
-//        fragment.setArguments(bundle);
-
-        //Utils.replaceFragment(this, fragment, "test");
-
-        Intent intent = new Intent(this, SearchResultTabActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("dataa", searchModel);
-        intent.putExtras(bundle);
-        this.startActivity(intent);
     }
 }

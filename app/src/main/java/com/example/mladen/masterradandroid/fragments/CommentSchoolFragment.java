@@ -25,6 +25,7 @@ import com.example.mladen.masterradandroid.model.CommentModel;
 import com.example.mladen.masterradandroid.model.SchoolModel;
 import com.example.mladen.masterradandroid.retrofit.RestApi;
 import com.example.mladen.masterradandroid.retrofit.RestClient;
+import com.jakewharton.rxbinding2.view.RxView;
 
 
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
@@ -56,7 +58,6 @@ public class CommentSchoolFragment extends Fragment {
     private ConnectivityManager conMgr;
 
     private CommentDataAdapter dataAdapter;
-
 
     private String mailfb;
     private String namefb;
@@ -101,6 +102,24 @@ public class CommentSchoolFragment extends Fragment {
         } else {
             button.hide();
         }
+
+        RxView.clicks(button)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) throws Exception {
+                        DialogComment dialog = new DialogComment();
+
+// optionally pass arguments to the dialog fragment
+//        Bundle args = new Bundle();
+//        args.putString("pickerStyle", "fancy");
+//        dialog.setArguments(args);
+// setup link back to use and display
+
+                        dialog.setTargetFragment(CommentSchoolFragment.this, DATEPICKER_FRAGMENT);
+                        dialog.show(getFragmentManager().beginTransaction(), "MyProgressDialog");
+                    }
+                });
+
         return view;
     }
 
@@ -151,20 +170,20 @@ public class CommentSchoolFragment extends Fragment {
         }
     }
 
-    @OnClick(R.id.button)
-    public void openDialog() {
-
-        DialogComment dialog = new DialogComment();
-
-// optionally pass arguments to the dialog fragment
-//        Bundle args = new Bundle();
-//        args.putString("pickerStyle", "fancy");
-//        dialog.setArguments(args);
-// setup link back to use and display
-
-        dialog.setTargetFragment(this, DATEPICKER_FRAGMENT);
-        dialog.show(getFragmentManager().beginTransaction(), "MyProgressDialog");
-    }
+//    @OnClick(R.id.button)
+//    public void openDialog() {
+//
+//        DialogComment dialog = new DialogComment();
+//
+//// optionally pass arguments to the dialog fragment
+////        Bundle args = new Bundle();
+////        args.putString("pickerStyle", "fancy");
+////        dialog.setArguments(args);
+//// setup link back to use and display
+//
+//        dialog.setTargetFragment(this, DATEPICKER_FRAGMENT);
+//        dialog.show(getFragmentManager().beginTransaction(), "MyProgressDialog");
+//    }
 
     public Observable<Void> sharedPref() {
         SharedPreferences sharedPref = getActivity().getSharedPreferences("facebook", Context.MODE_PRIVATE);

@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,14 +21,20 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.jakewharton.rxbinding2.view.RxView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.functions.Consumer;
 
 public class LoginActivity extends AppCompatActivity {
+
+    @BindView(R.id.back_icon) ImageView backButton;
+    @BindView(R.id.vithutLogin) Button vithutLoginButton;
 
     private TextView textView;
     private TextView textView2;
@@ -52,17 +60,23 @@ public class LoginActivity extends AppCompatActivity {
         initialize();
 
         loginWithFb();
-    }
 
-    @OnClick(R.id.back_icon)
-    public void back() {
-        finish();
-    }
+        RxView.clicks(backButton)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) throws Exception {
+                        finish();
+                    }
+                });
 
-    @OnClick(R.id.vithutLogin)
-    public void vithoutLogin() {
-        Intent intent = new Intent(activity, HomeTabsActivity.class);
-        startActivity(intent);
+        RxView.clicks(vithutLoginButton)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) throws Exception {
+                        Intent intent = new Intent(activity, HomeTabsActivity.class);
+                        startActivity(intent);
+                    }
+                });
     }
 
     private void loginWithFb() {

@@ -10,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,16 +19,17 @@ import com.example.mladen.masterradandroid.model.RecensionModel;
 import com.example.mladen.masterradandroid.model.SchoolModel;
 import com.example.mladen.masterradandroid.retrofit.RestApi;
 import com.example.mladen.masterradandroid.retrofit.RestClient;
+import com.jakewharton.rxbinding2.view.RxView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
@@ -87,6 +87,51 @@ public class RecensionsSchoolFragment extends Fragment {
             ratingBar.setVisibility(View.INVISIBLE);
         }
 
+        RxView.clicks(floatingActionButton)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) throws Exception {
+                        if(mailfb != "") {
+                            recension = ratingBar.getRating();
+
+                            recensionModel.setRec(recension);
+                            recensionModel.setSchool_id(school_id);
+                            recensionModel.setEmail(mailfb);
+
+                            compositeDisposable.add(apiService.postRecension(recensionModel)
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribeOn(Schedulers.io())
+                                    .subscribeWith(new DisposableObserver<String>() {
+                                        @Override
+                                        public void onNext(String s) {
+
+                                            String response = s;
+                                            if(response.equals("0")) {
+                                                Toast.makeText(getActivity(), "Успешно послато", Toast.LENGTH_SHORT).show();
+                                            } else if(response.equals("2")) {
+                                                Toast.makeText(getActivity(), "Установа је већ оцењена", Toast.LENGTH_SHORT).show();
+                                            } else
+                                                Toast.makeText(getActivity(), "Грешка", Toast.LENGTH_SHORT).show();
+
+                                            getRecensionData();
+                                        }
+
+                                        @Override
+                                        public void onError(Throwable e) {
+                                            Toast.makeText(getActivity(), "Грешка са сервиса", Toast.LENGTH_SHORT).show();
+
+                                        }
+
+                                        @Override
+                                        public void onComplete() {
+
+                                        }
+                                    }));
+                        } else
+                            Toast.makeText(getActivity(), "Морате бити пријављени", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
         return view;
     }
 
@@ -143,45 +188,45 @@ public class RecensionsSchoolFragment extends Fragment {
         Toast.makeText(getActivity(), "Рецензије нису добављене. ", Toast.LENGTH_SHORT).show();
     }
 
-    @OnClick(R.id.button)
-    public void send() {
-        if(mailfb != "") {
-            recension = ratingBar.getRating();
-
-            recensionModel.setRec(recension);
-            recensionModel.setSchool_id(school_id);
-            recensionModel.setEmail(mailfb);
-
-            compositeDisposable.add(apiService.postRecension(recensionModel)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.io())
-                    .subscribeWith(new DisposableObserver<String>() {
-                        @Override
-                        public void onNext(String s) {
-
-                            String response = s;
-                            if(response.equals("0")) {
-                                Toast.makeText(getActivity(), "Успешно послато", Toast.LENGTH_SHORT).show();
-                            } else if(response.equals("2")) {
-                                Toast.makeText(getActivity(), "Установа је већ оцењена", Toast.LENGTH_SHORT).show();
-                            } else
-                                Toast.makeText(getActivity(), "Грешка", Toast.LENGTH_SHORT).show();
-
-                            getRecensionData();
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            Toast.makeText(getActivity(), "Грешка са сервиса", Toast.LENGTH_SHORT).show();
-
-                        }
-
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    }));
-        } else
-            Toast.makeText(getActivity(), "Морате бити пријављени", Toast.LENGTH_SHORT).show();
-    }
+//    @OnClick(R.id.button)
+//    public void send() {
+//        if(mailfb != "") {
+//            recension = ratingBar.getRating();
+//
+//            recensionModel.setRec(recension);
+//            recensionModel.setSchool_id(school_id);
+//            recensionModel.setEmail(mailfb);
+//
+//            compositeDisposable.add(apiService.postRecension(recensionModel)
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribeOn(Schedulers.io())
+//                    .subscribeWith(new DisposableObserver<String>() {
+//                        @Override
+//                        public void onNext(String s) {
+//
+//                            String response = s;
+//                            if(response.equals("0")) {
+//                                Toast.makeText(getActivity(), "Успешно послато", Toast.LENGTH_SHORT).show();
+//                            } else if(response.equals("2")) {
+//                                Toast.makeText(getActivity(), "Установа је већ оцењена", Toast.LENGTH_SHORT).show();
+//                            } else
+//                                Toast.makeText(getActivity(), "Грешка", Toast.LENGTH_SHORT).show();
+//
+//                            getRecensionData();
+//                        }
+//
+//                        @Override
+//                        public void onError(Throwable e) {
+//                            Toast.makeText(getActivity(), "Грешка са сервиса", Toast.LENGTH_SHORT).show();
+//
+//                        }
+//
+//                        @Override
+//                        public void onComplete() {
+//
+//                        }
+//                    }));
+//        } else
+//            Toast.makeText(getActivity(), "Морате бити пријављени", Toast.LENGTH_SHORT).show();
+//    }
 }
